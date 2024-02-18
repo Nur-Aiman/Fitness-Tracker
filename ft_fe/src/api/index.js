@@ -1,4 +1,4 @@
-export const HOST = 'http://localhost:8080'
+export const HOST = 'https://fitness-tracker-api-bi2u.onrender.com'
 
 // local : http://localhost:8080
-// production : 
+// production : https://fitness-tracker-api-bi2u.onrender.com

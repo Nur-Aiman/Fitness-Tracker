@@ -246,6 +246,7 @@ const handleSaveExercise = async () => {
       alert('Exercise updated successfully.');
       setIsEditModalOpen(false);
       fetchExerciseList();
+      fetchExerciseLogs();
     } catch (error) {
       console.error('Error updating exercise:', error);
     }
@@ -447,10 +448,10 @@ const isExerciseLoggedToday = (exerciseId) => {
             <h2 className="text-3xl font-bold mb-4" style={{ color: "#FAEF5D" }}>Exercise List</h2>
 <div className="space-y-4">
 {exerciseList.map((exercise) => (
-    <div onClick={() => openEditModal(exercise)} key={exercise.id} className="flex justify-between items-center p-4 rounded-lg" style={{ backgroundColor: "#1D2B53", color: "#FAEF5D" }}>
-        <p onClick={() => openEditModal(exercise)} style={{ cursor: "pointer", color: "whitesmoke" }}>
-            <strong style={{ fontSize: '1.25em' }}>{exercise.name}</strong>
-        </p>
+    <div onClick={() => openEditModal(exercise)} key={exercise.id} className="flex justify-between items-center p-4 rounded-lg" style={{ backgroundColor: "#1D2B53", color: "#FAEF5D", borderLeft: "2px solid #FAEF5D", borderBottom: "2px solid #FAEF5D", cursor: "pointer" }}>
+    <p style={{ color: "whitesmoke" }}>
+        <strong style={{ fontSize: '1.25em' }}>{exercise.name}</strong>
+    </p>
         {isExerciseLoggedToday(exercise.id) ? (
             <button
                 onClick={() => handleCheck(exercise.id)}
@@ -588,23 +589,24 @@ const isExerciseLoggedToday = (exerciseId) => {
         </button>
     </div>
     {allDatesInRange.map((date) => (
-        <div key={date} className="p-4 rounded-lg" style={{ backgroundColor: "#1D2B53" }}>
-            <h3 className="text-xl font-bold mb-2">{date}</h3>
-            {groupedExerciseLogs[date].length > 0 ? (
-                groupedExerciseLogs[date].map((log) => (
-                    <div key={log.id} className="p-2 rounded-lg shadow mb-2" style={{ backgroundColor: "#7E2553", color: "whitesmoke" }}>
-                        <p><strong>Exercise:</strong> {log.exercisename}</p>
-                        <p><strong>Details:</strong> {log.exercisedetails}</p>
-                    </div>
-                ))
-            ) : (
-            
-                <p style={{color: "whitesmoke"}}>No exercise record found.</p>
+    <div key={date} className="p-4 rounded-lg" style={{ backgroundColor: "#1D2B53", borderLeft: "2px solid #FAEF5D", borderBottom: "2px solid #FAEF5D" }}>
+        <h3 className="text-xl font-bold mb-2" style={{ color: "whitesmoke" }}>{date}</h3>
+        {groupedExerciseLogs[date].length > 0 ? (
+            groupedExerciseLogs[date].map((log) => (
+                <div key={log.id} className="p-2 rounded-lg shadow mb-2" style={{ backgroundColor: "#7E2553", color: "whitesmoke" }}>
+                    <p><strong>Exercise:</strong> {log.exercisename}</p>
+                    <p><strong>Details:</strong> {log.exercisedetails}</p>
+                </div>
+            ))
+        ) : (
+        
+            <p style={{color: "whitesmoke"}}>No exercise record found.</p>
 
-               
-            )}
-        </div>
-    ))}
+           
+        )}
+    </div>
+))}
+
 </div>
 
 
