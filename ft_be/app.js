@@ -7,7 +7,7 @@ var cors = require('cors');
 
 var corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = ['http://localhost:3000', 'https://reading-tracker-b1nx.onrender.com'];
+    const allowedOrigins = ['http://localhost:3000', 'https://fitness-tracker-api-bi2u.onrender.com'];
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
