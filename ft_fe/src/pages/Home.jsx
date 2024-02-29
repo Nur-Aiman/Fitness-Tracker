@@ -5,14 +5,16 @@ import { HOST } from '../api'
 const generateDateRange = (startDate, endDate) => {
     const dateRange = [];
     let currentDate = new Date(startDate);
-
+    console.log("current date", currentDate)
+    console.log("end date",endDate)
+    currentDate.setDate(currentDate.getDate() + 1)
+    console.log('currentdate', currentDate)
     // Ensure currentDate is set to the start of the day in local time
     currentDate.setHours(0, 0, 0, 0);
-
-    while (currentDate <= endDate) {
+    while ( endDate <= currentDate) {
       // Use local date string to avoid time zone conversion issues
       dateRange.push(currentDate.toISOString().split('T')[0]);
-      currentDate.setDate(currentDate.getDate() + 1);
+      currentDate.setDate(currentDate.getDate() - 1);
     }
 
     return dateRange;
@@ -290,12 +292,16 @@ const handleSaveExercise = async () => {
 
     const endDate = new Date();
     const startDate = new Date();
+    console.log("Start date : ", startDate);
     startDate.setDate(endDate.getDate() - 6);
+    console.log("Start date : ", startDate);
 
     // const allDatesInRange = generateDateRange(startDate, endDate);
 
     // Sort dates in descending order
     allDatesInRange.sort((a, b) => new Date(b) - new Date(a));
+
+    console.log("All dates in range", allDatesInRange)
 
 
 const groupedExerciseLogs = exerciseLogs.reduce((acc, log) => {
@@ -320,7 +326,9 @@ const groupedExerciseLogs = exerciseLogs.reduce((acc, log) => {
   const handlePastWeek = () => {
     setCurrentStartDate(prevDate => {
         const newDate = new Date(prevDate);
+        console.log("new date",newDate)
         newDate.setDate(newDate.getDate() - 7);
+        console.log("new date",newDate)
         return newDate;
     });
 };
@@ -337,7 +345,9 @@ useEffect(() => {
     const fetchExerciseLogsForWeek = async () => {
         // Define the end date of the week based on the current start date
         let endDate = new Date(currentStartDate);
-        endDate.setDate(endDate.getDate() + 6);
+        console.log("end date",endDate);
+        endDate.setDate(endDate.getDate() - 6);
+        console.log("end date baru",endDate)
 
         try {
             // Update the fetch URL with the correct query parameters for date range
@@ -357,7 +367,9 @@ useEffect(() => {
 
     // Recalculate the allDatesInRange to reflect the current week
     let newEndDate = new Date(currentStartDate);
-    newEndDate.setDate(newEndDate.getDate() + 6);
+    console.log("current start date", currentStartDate);
+    newEndDate.setDate(newEndDate.getDate() - 6);
+    console.log("end date", newEndDate)
     setAllDatesInRange(generateDateRange(currentStartDate, newEndDate));
 
 }, [currentStartDate]);
