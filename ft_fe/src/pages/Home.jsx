@@ -461,15 +461,35 @@ const isExerciseLoggedToday = (exerciseId) => {
     <p style={{ color: "whitesmoke" }}>
         <strong style={{ fontSize: '1.25em' }}>{exercise.name}</strong>
     </p>
-        {isExerciseLoggedToday(exercise.id) ? (
-            <button
-                onClick={() => handleCheck(exercise.id)}
-                className="py-2 px-4 rounded transition duration-150 ease-in-out"
-                style={{ backgroundColor: "#7E2553", color: "#FAEF5D" }}
-            >
-                Edit
-            </button>
-        ) : (
+    {isExerciseLoggedToday(exercise.id) ? (
+    <div className="flex items-center"> 
+        <button
+            onClick={() => handleCheck(exercise.id)}
+            className="py-2 px-4 rounded transition duration-150 ease-in-out"
+            style={{ backgroundColor: "#7E2553", color: "#FAEF5D" }}
+        >
+            Edit
+        </button>
+        <div
+            onClick={() => handleCheck(exercise.id)}
+            className="ml-2 flex justify-center items-center cursor-pointer"
+            style={{
+                width: '36px',
+                height: '36px',
+                backgroundColor: "green",
+                color: "white",
+                borderRadius: '50%',
+                border: '2px solid green',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+            }}
+        >
+            <i className="fas fa-check" style={{ fontSize: '1rem' }}></i>
+        </div>
+    </div>
+) : (
             <div
                 onClick={() => handleCheck(exercise.id)}
                 className="flex justify-center items-center cursor-pointer"
