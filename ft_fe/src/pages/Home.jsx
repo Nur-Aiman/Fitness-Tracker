@@ -5,10 +5,8 @@ import { HOST } from '../api'
 const generateDateRange = (startDate, endDate) => {
     const dateRange = [];
     let currentDate = new Date(startDate);
-    console.log("current date", currentDate)
-    console.log("end date",endDate)
     currentDate.setDate(currentDate.getDate() + 1)
-    console.log('currentdate', currentDate)
+
     // Ensure currentDate is set to the start of the day in local time
     currentDate.setHours(0, 0, 0, 0);
     while ( endDate <= currentDate) {
@@ -292,16 +290,16 @@ const handleSaveExercise = async () => {
 
     const endDate = new Date();
     const startDate = new Date();
-    console.log("Start date : ", startDate);
+
     startDate.setDate(endDate.getDate() - 6);
-    console.log("Start date : ", startDate);
+ 
 
     // const allDatesInRange = generateDateRange(startDate, endDate);
 
     // Sort dates in descending order
     allDatesInRange.sort((a, b) => new Date(b) - new Date(a));
 
-    console.log("All dates in range", allDatesInRange)
+
 
 
 const groupedExerciseLogs = exerciseLogs.reduce((acc, log) => {
@@ -326,9 +324,7 @@ const groupedExerciseLogs = exerciseLogs.reduce((acc, log) => {
   const handlePastWeek = () => {
     setCurrentStartDate(prevDate => {
         const newDate = new Date(prevDate);
-        console.log("new date",newDate)
         newDate.setDate(newDate.getDate() - 7);
-        console.log("new date",newDate)
         return newDate;
     });
 };
@@ -341,35 +337,36 @@ const handleNextWeek = () => {
     });
 };
 
-useEffect(() => {
-    const fetchExerciseLogsForWeek = async () => {
-        // Define the end date of the week based on the current start date
-        let endDate = new Date(currentStartDate);
-        console.log("end date",endDate);
-        endDate.setDate(endDate.getDate() - 6);
-        console.log("end date baru",endDate)
+const fetchExerciseLogsForWeek = async () => {
+  
+    let endDate = new Date(currentStartDate);
+    endDate.setDate(endDate.getDate() - 6);
+    console.log("Fetch log start date : ", currentStartDate)
+    console.log("Fetch log end date : ", endDate)
+    console.log(currentStartDate.toISOString().split('T')[0])
+    console.log(endDate.toISOString().split('T')[0])
 
-        try {
-            // Update the fetch URL with the correct query parameters for date range
-            const response = await fetch(`${HOST}/exercise/viewExerciseLog?startDate=${currentStartDate.toISOString().split('T')[0]}&endDate=${endDate.toISOString().split('T')[0]}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            setExerciseLogs(data);
-        } catch (error) {
-            console.error("Error fetching exercise logs: ", error);
+    try {
+
+        const response = await fetch(`${HOST}/exercise/viewExerciseLog?startDate=${endDate.toISOString().split('T')[0]}&endDate=${currentStartDate.toISOString().split('T')[0]}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
+        const data = await response.json();
+        setExerciseLogs(data);
+        console.log("Exercise log for week(data) : ", data)
+        console.log("Exercise log for week(exerciseLog) : ", exerciseLogs)
 
-    // Call the function to fetch logs
+    } catch (error) {
+        console.error("Error fetching exercise logs: ", error);
+    }
+};
+
+useEffect(() => {
+    
     fetchExerciseLogsForWeek();
-
-    // Recalculate the allDatesInRange to reflect the current week
     let newEndDate = new Date(currentStartDate);
-    console.log("current start date", currentStartDate);
     newEndDate.setDate(newEndDate.getDate() - 6);
-    console.log("end date", newEndDate)
     setAllDatesInRange(generateDateRange(currentStartDate, newEndDate));
 
 }, [currentStartDate]);
@@ -379,7 +376,7 @@ const todayDate = new Date().toISOString().split('T')[0];
 const isExerciseLoggedToday = (exerciseId) => {
     // Ensure the date is in the same format as the logs for accurate comparison
     const todayDate = getLocalDateForKualaLumpur().split('T')[0];
-    // console.log("tarikh now : ", todayDate)
+  
     return exerciseLogs.some(log => log.exercisecompleted === exerciseId && log.date.startsWith(todayDate));
 };
 
